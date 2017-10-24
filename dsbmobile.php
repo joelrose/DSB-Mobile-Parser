@@ -1,7 +1,5 @@
 <?php
 
-require("simple_html_dom.php");
-
 class DSB
 {
     private $USERNAME = "";
