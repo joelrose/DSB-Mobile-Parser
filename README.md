@@ -1,5 +1,5 @@
 # DSB-Mobile-Parser
-Unofficial DSBmobile API written in PHP, which uses SimpleHtmlDom http://simplehtmldom.sourceforge.net/ to parse the DSB-Plans
+Unofficial DSBmobile API written in PHP, which uses http://simplehtmldom.sourceforge.net/ to parse the DSB-Plans
 ## Usage:
 ```php
 <?php
