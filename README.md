@@ -6,10 +6,11 @@ Unofficial DSBmobile API written in PHP, which uses SimpleHtmlDom http://simpleh
 
 $dsbmobile = new DSB(*Your Username*, *Your Password*);
 
-if($dsbmobile->getJson($index))
-{
+$plan = $dsbmobile->getJson($index);
 
-}
+if($plan == false)
+
+...
 
 ?>
 ```
