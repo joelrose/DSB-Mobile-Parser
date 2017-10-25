@@ -168,14 +168,17 @@ class DSB
                 $values = array();
 
                 foreach ($row->find('td') as $value) {
+                
                     $values[$count] = $value->plaintext;
                     $count++;
                 }
 
                 $json .= "{";
+
                 for ($i = 0; $i < count($captions); $i++) {
                     $json .= '"' . $captions[$i] . '":' . ' "' . $values[$i] . '" ' . ",";
                 }
+
                 $json = substr($json, 0, -1);
                 $json .= "},";
 
