@@ -2,8 +2,12 @@
 
 require("simple_html_dom.php");
 
+/**
+ * Class DSB
+ */
 class DSB
 {
+
     private $USERNAME = "";
     private $PASSWORD = "";
 
@@ -17,12 +21,20 @@ class DSB
     private $BUNDLE_ID = "de.heinekingmedia.inhouse.dsbmobile.web";
     private $HMDataType = 1;
 
+    /**
+     * DSB constructor.
+     * @param $username
+     * @param $password
+     */
     public function __construct($username, $password)
     {
         $this->USERNAME = $username;
         $this->PASSWORD = $password;
     }
 
+    /**
+     * @return a Json object which contains information about your DSB
+     */
     public function getData()
     {
         $date = date('D M d Y H:i:s O');
@@ -65,6 +77,9 @@ class DSB
 
         $request = curl_init($this->WEBSERVICE_METHOD);
 
+        if($request == false)
+            return false;
+
         curl_setopt_array($request,
             array(
                 CURLOPT_POST => TRUE,
@@ -81,7 +96,11 @@ class DSB
         // close Connection
         curl_close($request);
 
-        // parse json
+        if($response_encoded == false)
+            return false;
+
+
+        // parse json_encoded
         $response_json = json_decode($response_encoded)->d;
 
         // decode Base64
@@ -93,6 +112,84 @@ class DSB
         return $response_decoded;
     }
 
+    /**
+     * @param $index
+     * @return false if the function fails otherwise it returns a Json object which contains your DSB plan
+     */
+    public function getJson($index)
+    {
+        $data = $this->getData();
+
+        if ($data == false)
+            return false;
+
+        $json = json_decode($data);
+
+        if (!isset($json->ResultMenuItems[0]->Childs[0]->Root->Childs[$index]->Childs[0]->Detail))
+            return false;
+
+        if (!isset($json->ResultMenuItems[0]->Childs[0]->Title))
+            return false;
+
+        $url = $json->ResultMenuItems[0]->Childs[0]->Root->Childs[$index]->Childs[0]->Detail;
+        $title = $json->ResultMenuItems[0]->Childs[0]->Title;
+
+        $html = file_get_html($url);
+
+        if ($html == false)
+            return false;
+
+        $table = $html->find('table', 1);
+
+        if (empty($table))
+            return false;
+
+        $json = '{"' . $title . '":[';
+
+        $total = -1;
+        $captions = array();
+
+        foreach ($table->find('tr') as $row) {
+            $total++;
+
+            if ($row->find('th')) {
+                $count = 0;
+
+                foreach ($row->find('th') as $value) {
+                    $captions[$count] = $value->plaintext;
+                    $count++;
+                }
+                continue;
+            }
+
+            if ($row->find('td')) {
+                $count = 0;
+
+                $values = array();
+
+                foreach ($row->find('td') as $value) {
+                    $values[$count] = $value->plaintext;
+                    $count++;
+                }
+
+                $json .= "{";
+                for ($i = 0; $i < count($captions); $i++) {
+                    $json .= '"' . $captions[$i] . '":' . ' "' . $values[$i] . '" ' . ",";
+                }
+                $json = substr($json, 0, -1);
+                $json .= "},";
+
+            }
+        }
+
+        $json = substr($json, 0, -2);
+
+        $json .= "}]" . ',"total":' . ' "' . $total . '" ' . "}";
+
+        return $json;
+    }
+
 }
+
 
 ?>
