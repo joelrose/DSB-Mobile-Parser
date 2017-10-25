@@ -14,10 +14,10 @@ class DSB
     private $WEBSERVICE_METHOD = "https://app.dsbcontrol.de/JsonHandler.ashx/GetData";
     private $APP_VERSION = "2.5.9";
     private $LANGUAGE = "de";
-    private $OS_VERSION = "19 4.4.2";
-    private $APP_ID = "d8c3deab-e8ed-4020-91b9-09fad5173b1a";
-    private $DEVICE = "GT-P5210";
-    private $PUSH_ID = "APA91bFvpiAGCwO13oJg9ZTgq462oTPF-yQJ5vQaa2wpxL2a0GMaHBzamoksryI_r1rnAmqivwNlAfO2Qxq5umIiWUrVKOfvCpc2soTyVDRAsS-OJYIsO7Vkw0LcjkaRat_U6cEhe47y";
+    private $OS_VERSION = "";
+    private $APP_ID = "";
+    private $DEVICE = "";
+    private $PUSH_ID = "";
     private $BUNDLE_ID = "de.heinekingmedia.inhouse.dsbmobile.web";
     private $HMDataType = 1;
 

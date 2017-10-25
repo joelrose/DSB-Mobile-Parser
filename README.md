@@ -31,7 +31,7 @@ public function __construct($username, $password)
 public function getData()
 ```
 
-  * @param $index
+  * @param if your DSB has multiple plans you should pass the number of the Table you want, otherwise its 0
   * @return false if the function fails otherwise it returns a Json object which contains your DSB plan
   
 ```php
