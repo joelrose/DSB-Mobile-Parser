@@ -11,16 +11,6 @@ class DSB
     private $USERNAME = "";
     private $PASSWORD = "";
 
-    private $WEBSERVICE_METHOD = "https://app.dsbcontrol.de/JsonHandler.ashx/GetData";
-    private $APP_VERSION = "2.5.9";
-    private $LANGUAGE = "de";
-    private $OS_VERSION = "";
-    private $APP_ID = "";
-    private $DEVICE = "";
-    private $PUSH_ID = "";
-    private $BUNDLE_ID = "de.heinekingmedia.inhouse.dsbmobile.web";
-    private $HMDataType = 1;
-
     /**
      * DSB constructor.
      * @param $username
@@ -37,20 +27,30 @@ class DSB
      */
     public function getData()
     {
+        $WEBSERVICE_METHOD = "https://app.dsbcontrol.de/JsonHandler.ashx/GetData";
+        $APP_VERSION = "2.5.9";
+        $LANGUAGE = "de";
+        $OS_VERSION = "";
+        $APP_ID = "";
+        $DEVICE = "";
+        $PUSH_ID = "";
+        $BUNDLE_ID = "de.heinekingmedia.inhouse.dsbmobile.web";
+        $HMDataType = 1;
+        
         $date = date('D M d Y H:i:s O');
 
         $arguments =
             Array
             (
-                "UserId" => $this->USERNAME,
-                "UserPw" => $this->PASSWORD,
-                "AppVersion" => $this->APP_VERSION,
-                "Language" => $this->LANGUAGE,
-                "OsVersion" => $this->OS_VERSION,
-                "AppId" => $this->APP_ID,
-                "Device" => $this->DEVICE,
-                "PushId" => $this->PUSH_ID,
-                "BundleId" => $this->BUNDLE_ID,
+                "UserId" => $USERNAME,
+                "UserPw" => $PASSWORD,
+                "AppVersion" => $APP_VERSION,
+                "Language" => $LANGUAGE,
+                "OsVersion" => $OS_VERSION,
+                "AppId" => $APP_ID,
+                "Device" => $DEVICE,
+                "PushId" => $PUSH_ID,
+                "BundleId" => $BUNDLE_ID,
                 "Date" => $date,
                 "LastUpdate" => $date
             );
@@ -70,12 +70,12 @@ class DSB
                 Array(
                     "req" => Array(
                         "Data" => $arguments_base64_encoded,
-                        "DataType" => $this->HMDataType
+                        "DataType" => $HMDataType
                     )
                 )
             );
 
-        $request = curl_init($this->WEBSERVICE_METHOD);
+        $request = curl_init($WEBSERVICE_METHOD);
 
         if($request == false)
             return false;
