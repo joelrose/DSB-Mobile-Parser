@@ -42,8 +42,8 @@ class DSB
         $arguments =
             Array
             (
-                "UserId" => $USERNAME,
-                "UserPw" => $PASSWORD,
+                "UserId" => $this->USERNAME,
+                "UserPw" => $this->PASSWORD,
                 "AppVersion" => $APP_VERSION,
                 "Language" => $LANGUAGE,
                 "OsVersion" => $OS_VERSION,
