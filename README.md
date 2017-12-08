@@ -1,4 +1,5 @@
 # DSB-Mobile-Parser
+Thanks to: https://github.com/xerc
 Unofficial DSBmobile API written in PHP, which uses http://simplehtmldom.sourceforge.net/ to parse the DSB-Plans
 ## Usage:
 ```php
