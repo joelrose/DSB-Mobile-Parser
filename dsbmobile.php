@@ -116,80 +116,38 @@ class DSB
      * @param $index
      * @return false if the function fails otherwise it returns a Json object which contains your DSB plan
      */
-    public function getJson($index)
+    public function getJson()
     {
-        $data = $this->getData();
-
-        if ($data == false)
+        if (false == ($data = $this->getData()))
             return false;
 
         $json = json_decode($data);
+        $array = [];
 
-        if (!isset($json->ResultMenuItems[0]->Childs[0]->Root->Childs[$index]->Childs[0]->Detail))
-            return false;
+        foreach ($json->ResultMenuItems[0]->Childs[0]->Root->Childs as $child) {
+            $list = trim($child->Title);
 
-        if (!isset($json->ResultMenuItems[0]->Childs[0]->Title))
-            return false;
+            $table = file_get_html($child->Childs[0]->Detail)->find('table', 1);
 
-        $url = $json->ResultMenuItems[0]->Childs[0]->Root->Childs[$index]->Childs[0]->Detail;
-        $title = $json->ResultMenuItems[0]->Childs[0]->Title;
-
-        $html = file_get_html($url);
-
-        if ($html == false)
-            return false;
-
-        $table = $html->find('table', 1);
-
-        if (empty($table))
-            return false;
-
-        $json = '{"' . $title . '":[';
-
-        $total = -1;
-        $captions = array();
-
-        foreach ($table->find('tr') as $row) {
-            $total++;
-
-            if ($row->find('th')) {
-                $count = 0;
-
-                foreach ($row->find('th') as $value) {
-                    $captions[$count] = $value->plaintext;
-                    $count++;
-                }
+            if (empty($table))
                 continue;
-            }
 
-            if ($row->find('td')) {
-                $count = 0;
+            $titles = [];
+            $rowPos = 0;
 
-                $values = array();
+            foreach ($table->find('tr') as $row) {
+                if ($col = $row->find('td')) {
+                    foreach ($col as $index => $value)
+                        @$array[$list][$rowPos][$titles[$index]] = $value->plaintext;
 
-                foreach ($row->find('td') as $value) {
-                
-                    $values[$count] = $value->plaintext;
-                    $count++;
+                    $rowPos++;
+                } elseif ($col = $row->find('th')) {
+                    foreach ($col as $index => $value)// index not req.
+                        $titles[$index] = $value->plaintext;
                 }
-
-                $json .= "{";
-
-                for ($i = 0; $i < count($captions); $i++) {
-                    $json .= '"' . $captions[$i] . '":' . ' "' . $values[$i] . '" ' . ",";
-                }
-
-                $json = substr($json, 0, -1);
-                $json .= "},";
-
             }
         }
-
-        $json = substr($json, 0, -2);
-
-        $json .= "}]" . ',"total":' . ' "' . $total . '" ' . "}";
-
-        return $json;
+        return json_encode($array);
     }
 
 }
