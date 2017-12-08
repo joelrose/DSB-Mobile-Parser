@@ -1,5 +1,5 @@
 # DSB-Mobile-Parser
-Thanks to: https://github.com/xerc
+Thanks to: https://github.com/xerc       
 Unofficial DSBmobile API written in PHP, which uses http://simplehtmldom.sourceforge.net/ to parse the DSB-Plans
 ## Usage:
 ```php
@@ -32,11 +32,10 @@ public function __construct($username, $password)
 public function getData()
 ```
 
-  * @param if your DSB has multiple plans you should pass the number of the Table you want, otherwise its 0
   * @return false if the function fails otherwise it returns a Json object which contains your DSB plan
   
 ```php
-public function getJson($index)
+public function getJson()
 ```
 
 
